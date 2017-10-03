@@ -5,4 +5,4 @@ URL: https://web.stanford.edu/~jurafsky/slp3.
 
 Contact information: xiaodan.li@duke.edu
 
-dga testing cases are from: https://github.com/andrewaeva/DGA/tree/master/dga_wordlists
+DGA testing cases are from: https://github.com/andrewaeva/DGA/tree/master/dga_wordlists
