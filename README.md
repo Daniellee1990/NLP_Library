@@ -4,3 +4,5 @@ This library implements all of the algorithm and concepts in Speech and language
 URL: https://web.stanford.edu/~jurafsky/slp3.
 
 Contact information: xiaodan.li@duke.edu
+
+dga testing cases are from: https://github.com/andrewaeva/DGA/tree/master/dga_wordlists
