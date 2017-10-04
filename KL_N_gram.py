@@ -18,10 +18,10 @@ trainGDom = gDomains[0:980000]
 testGDom = gDomains[980000:]
 
 # train benigh letters distibution to get bunigram 
-bunigram = NLP_module.getUnigram(trainGDom)
+bunigramPro = NLP_module.getUnigramPro(trainGDom)
     
 # train benigh strings to get bbigram
-bbigram = NLP_module.getBigram(trainGDom)
+bbigramPro = NLP_module.getBigramPro(trainGDom)
         
 # get malicious letters distribution
 file = open('/Users/lixiaodan/Desktop/ece590/DGA/conficker.txt', 'r')
@@ -34,23 +34,23 @@ mtotal = 0
 trainDgas = dgas[0:80000]
 testDgas = dgas[80000:]
 
-munigram = NLP_module.getUnigram(trainDgas)
+munigramPro = NLP_module.getUnigramPro(trainDgas)
 
 # train malicious strings to get mbigram
-mbigram = NLP_module.getBigram(trainDgas)
+mbigramPro = NLP_module.getBigramPro(trainDgas)
 
 # 1 - dga, 0 - valid domain
 # testing benign dataset
 gDomByUni = list()
 gDomByBi = list()
 for gdDom in testGDom:
-    KLdisUni = NLP_module.getUniKLdis(bunigram, munigram, gdDom)
+    KLdisUni = NLP_module.getUniKLdis(bunigramPro, munigramPro, gdDom)
     if KLdisUni <= 0:
         gDomByUni.append(1)
     else :
         gDomByUni.append(0)
 
-    KLdisBi = NLP_module.getBiKLdis(bbigram, mbigram, gdDom)
+    KLdisBi = NLP_module.getBiKLdis(bbigramPro, mbigramPro, gdDom)
     if KLdisBi <= 0:
         gDomByBi.append(1)
     else:
@@ -59,13 +59,13 @@ for gdDom in testGDom:
 dgaByUni = list()
 dgaByBi = list()
 for dga in testDgas: 
-    KLdisUni = NLP_module.getUniKLdis(bbigram, mbigram, dga)
+    KLdisUni = NLP_module.getUniKLdis(bbigramPro, mbigramPro, dga)
     if KLdisUni <= 0:
         dgaByUni.append(1)
     else :
         dgaByUni.append(0)
 
-    KLdisBi = NLP_module.getBiKLdis(bbigram, mbigram, dga)
+    KLdisBi = NLP_module.getBiKLdis(bbigramPro, mbigramPro, dga)
     if KLdisBi <= 0:
         dgaByBi.append(1)
     else:

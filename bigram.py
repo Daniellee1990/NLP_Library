@@ -20,15 +20,7 @@ for i in range(len(goodNames)):
 trainGDom = gDomains[0:980000]
 testGDom = gDomains[980000:]
 
-bunigram = dict()
-totalCh = 0
-for domain in gDomains:
-    totalCh = totalCh + len(domain)
-    for char in domain:
-        if char in bunigram.keys():
-            bunigram[char] = bunigram.get(char) + 1
-        else:
-            bunigram[char] = 1
+bunigram = NLP_module.getUnigram(gDomains)
 
 chars = list(bunigram.keys())
 biMatrix = NLP_module.getBiProMatrix(bunigram, chars, gDomains)
@@ -37,7 +29,7 @@ logMatrix = np.zeros((len(chars), len(chars)))
 for i in range(len(chars)):
     for j in range(len(chars)):
         logMatrix[i][j] = math.log2(biMatrix[i][j])
-
+        
 gPPWs = NLP_module.getPPWs(trainGDom, logMatrix, chars)
 goodMean = np.mean(gPPWs)
 print("PPW for valid domain name")
@@ -45,10 +37,13 @@ print(goodMean)
 print(np.min(gPPWs))
 print(np.max(gPPWs))
 
+"""
 url = '/Users/lixiaodan/Desktop/ece590/DGA/conficker.txt'
 print("PPW for conficker")
 NLP_module.printStaticsPPW(url, logMatrix, chars)
+"""
 
+"""
 url = '/Users/lixiaodan/Desktop/ece590/DGA/cryptolocker.txt'
 print("PPW for cryptolocker")
 NLP_module.printStaticsPPW(url, logMatrix, chars)
@@ -76,8 +71,7 @@ NLP_module.printStaticsPPW(url, logMatrix, chars)
 url = '/Users/lixiaodan/Desktop/ece590/DGA/pushdo.txt'
 print("PPW for pushdo")
 NLP_module.printStaticsPPW(url, logMatrix, chars)
-
-    
+"""    
 
     
 

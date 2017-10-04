@@ -84,7 +84,7 @@ def plotRoc(y_predict, y_label):
     plt.legend(loc="lower right")
     plt.show()
 
-def getUnigram(dataset):
+def getUnigramPro(dataset):
     bunigram = dict()
     totalCh = 0
     for domain in dataset:
@@ -98,7 +98,17 @@ def getUnigram(dataset):
         bunigram[key] = bunigram[key] * 1.0 / totalCh
     return bunigram
 
-def getBigram(dataset):
+def getUnigram(dataset):
+    bunigram = dict()
+    for domain in dataset:
+        for char in domain:
+            if char in bunigram.keys():
+                bunigram[char] = bunigram.get(char) + 1
+            else:
+                bunigram[char] = 1
+    return bunigram
+
+def getBigramPro(dataset):
     bbigram = dict()
     tt = 0
     n = 2
@@ -119,10 +129,45 @@ def getBigram(dataset):
         bbigram[key] = bbigram[key] * 1.0 / tt
     return bbigram
 
+def getBigram(dataset):
+    bbigram = dict()
+    n = 2
+    for domain in dataset:
+        if len(domain) <= 1:
+            continue
+        tp = ''
+        for i in range(len(domain)):
+            tp = tp + domain[i]
+            if i >= (n - 1):
+                if tp in bbigram.keys():
+                    bbigram[tp] = bbigram.get(tp) + 1
+                else :
+                    bbigram[tp] = 1
+                tp = tp[1:]
+    return bbigram
+
+def getBiList(dataset):
+    biList = dict()
+    tt = 0
+    n = 2
+    for domain in dataset:
+        if len(domain) <= 1:
+            continue
+        tt = tt + len(domain) - (n - 1)
+        tp = ''
+        curBis = list()
+        for i in range(len(domain)):
+            tp = tp + domain[i]
+            if i >= (n - 1):
+                curBis.append(tp)    
+                tp = tp[1:]
+        biList[domain] = curBis
+    return biList
+
 def getPPWs(testSet, logMatrix, rowNames):
     PPWs = list()
-    for dga in testSet:
-        testStr = '^'+ dga + '$'
+    for test in testSet:
+        testStr = '^'+ test + '$'
         N = len(testStr)
         PPW = 1
         cur = ''
@@ -161,8 +206,12 @@ def getBiProMatrix(bunigram, chars, gDomains):
     # add v smoothing          
     for i in range(len(chars)):
         cwn_1 = bunigram.get(chars[i])
+        #print("C(wn-1)")
+        #print(cwn_1)
         for j in range(len(chars)):
             biMatrix[i][j] = ( biMatrix[i][j] + 1 ) * 1.0 / (cwn_1 + len(chars))
+            #print("biMatrix[i][j]")
+            #print(biMatrix[i][j])
     return biMatrix
 
 def minEditDisCost(src, des):
