@@ -206,12 +206,8 @@ def getBiProMatrix(bunigram, chars, gDomains):
     # add v smoothing          
     for i in range(len(chars)):
         cwn_1 = bunigram.get(chars[i])
-        #print("C(wn-1)")
-        #print(cwn_1)
         for j in range(len(chars)):
             biMatrix[i][j] = ( biMatrix[i][j] + 1 ) * 1.0 / (cwn_1 + len(chars))
-            #print("biMatrix[i][j]")
-            #print(biMatrix[i][j])
     return biMatrix
 
 def minEditDisCost(src, des):

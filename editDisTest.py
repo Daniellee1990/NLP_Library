@@ -46,7 +46,7 @@ gDomains = list()
 for i in range(len(goodNames)):
     domainTp = goodNames[i].split('.')[0]
     gDomains.append(domainTp)
-gDomains = gDomains[:10000]
+gDomains = gDomains[:1000]
 # get malicious letters distribution
 file = open('/Users/lixiaodan/Desktop/ece590/DGA/conficker.txt', 'r')
 dgas = list()
@@ -54,7 +54,6 @@ for line in file:
     dga = line.split('.')[0]
     dgas.append(dga) 
     
-"""
 minDisDga = list()    
 for dga in dgas:
     minDis = 40
@@ -74,8 +73,7 @@ dgamin = np.min(minDisDga)
 dgamax = np.max(minDisDga) 
 print(dgameanDis)
 print(dgamin)
-print(dgamax) 
-"""
+print(dgamax)
 
 minDises = list()
 for str1 in gDomains:

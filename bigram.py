@@ -37,11 +37,9 @@ print(goodMean)
 print(np.min(gPPWs))
 print(np.max(gPPWs))
 
-"""
 url = '/Users/lixiaodan/Desktop/ece590/DGA/conficker.txt'
 print("PPW for conficker")
 NLP_module.printStaticsPPW(url, logMatrix, chars)
-"""
 
 """
 url = '/Users/lixiaodan/Desktop/ece590/DGA/cryptolocker.txt'
