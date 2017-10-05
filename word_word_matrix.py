@@ -49,11 +49,22 @@ def getWordWordMatrix(words, neighbor):
             word_word[rownum][colnum] = word_word[rownum][colnum] + 1
     return word_word, wdList
 
-words = brown.words()[:10000]
+words = brown.words()[:500]
+total = len(words)
 neighbor = 3
 word_word, word_names = getWordWordMatrix(words, neighbor)
 for i in range(word_word.shape[0]):
     for j in range(word_word.shape[1]):
         if word_word[i][j] != 0:
             print(word_word[i][j])
-print(word_names)
+#print(word_names)
+
+# get Pointwise Mutual Information(PMI)
+word_word_pro = np.zeros(len(word_names), len(word_names))
+for i in range(len(word_names)):
+    for j in range(len(word_names)):
+        word_word_pro[i][j] = word_word_pro[i][j] * 1.0 / total
+
+#get whichever the string1 and string2 and get their PMI        
+        
+    
