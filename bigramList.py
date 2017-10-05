@@ -15,7 +15,7 @@ gDomains = list()
 for i in range(len(goodNames)):
     domainTp = goodNames[i].split('.')[0]
     gDomains.append(domainTp)
-gDomains = gDomains[:1000]    
+gDomains = gDomains[:5000]    
 bigramLists = NLP_module.getBiList(gDomains)
 
 # get malicious letters distribution
@@ -24,7 +24,6 @@ dgas = list()
 for line in file:
     dga = line.split('.')[0]
     dgas.append(dga)
-#dgas = dgas[:100]
 
 dgaJI = list()
 for dga in dgas:
