@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 """
 Spyder Editor
-
-This is a temporary script file.
 """
 import pandas as pd
 import NLP_module
@@ -24,7 +22,8 @@ bunigramPro = NLP_module.getUnigramPro(trainGDom)
 bbigramPro = NLP_module.getBigramPro(trainGDom)
         
 # get malicious letters distribution
-file = open('/Users/lixiaodan/Desktop/ece590/DGA/conficker.txt', 'r')
+#file = open('/Users/lixiaodan/Desktop/ece590/DGA/conficker.txt', 'r')
+file = open('/Users/lixiaodan/Desktop/ece590/DGA/zeus.txt', 'r')
 dgas = list()
 for line in file:
     dga = line.split('.')[0]

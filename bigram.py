@@ -41,7 +41,6 @@ url = '/Users/lixiaodan/Desktop/ece590/DGA/conficker.txt'
 print("PPW for conficker")
 NLP_module.printStaticsPPW(url, logMatrix, chars)
 
-"""
 url = '/Users/lixiaodan/Desktop/ece590/DGA/cryptolocker.txt'
 print("PPW for cryptolocker")
 NLP_module.printStaticsPPW(url, logMatrix, chars)
@@ -69,9 +68,3 @@ NLP_module.printStaticsPPW(url, logMatrix, chars)
 url = '/Users/lixiaodan/Desktop/ece590/DGA/pushdo.txt'
 print("PPW for pushdo")
 NLP_module.printStaticsPPW(url, logMatrix, chars)
-"""    
-
-    
-
-
-

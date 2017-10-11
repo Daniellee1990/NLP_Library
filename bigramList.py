@@ -71,5 +71,4 @@ for dom in bigramLists.keys():
     tp.append(dom)
     tp.append(closeDm)
     tp.append(maxJI)
-    domJI.append(tp)
-        
+    domJI.append(tp)        
