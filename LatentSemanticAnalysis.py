@@ -58,7 +58,7 @@ for k in range(docNum):
         term_doc[i][k] = tp
 
 # get the tf-idf
-term_doc_tfidf = gettf_idf(term_doc)
+# term_doc_tfidf = gettf_idf(term_doc)
 
 # get word_term for LSA
 fre_term_doc = term_doc / term_doc.sum(axis=0)
@@ -76,13 +76,17 @@ for i in range(numWords):
     for j in range(docNum):
         if fre_term_doc[i][j] == 0:
             continue
-        sum = sum + fre_term_doc[i][j] * np.log(fre_term_doc[i][j])
-        
+        sum = sum + fre_term_doc[i][j] * np.log(fre_term_doc[i][j])    
     para = 1 + sum * 1.0 / np.log(docNum)
     # set global weight for cell(i, k)
     for k in range(docNum):
         global_term_doc[i][k] = para
-"""
-U, s, V = np.linalg.svd(term_doc_normed)
-print(s)
-"""
+
+LSA_word_doc = np.zeros((numWords,docNum))
+for i in range(numWords):
+    for j in range(docNum):
+        LSA_word_doc[i][j] = local_term_doc[i][j] * global_term_doc[i][j] * term_doc[i][j]
+
+U, s, V = np.linalg.svd(LSA_word_doc)
+k = 10
+Wk = U[:, 0:k]
