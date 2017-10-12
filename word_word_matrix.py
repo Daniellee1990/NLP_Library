@@ -112,7 +112,7 @@ def getPMI(word, context, word_names, addN):
             PMI = 0
     return PMI
 
-words = brown.words()[:2000]
+words = brown.words()[:5000]
 total = len(words)
 neighbor = 3
 word_word, word_names = getWordWordMatrix(words, neighbor)
