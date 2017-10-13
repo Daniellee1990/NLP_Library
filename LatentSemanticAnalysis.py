@@ -88,5 +88,6 @@ for i in range(numWords):
         LSA_word_doc[i][j] = local_term_doc[i][j] * global_term_doc[i][j] * term_doc[i][j]
 
 U, s, V = np.linalg.svd(LSA_word_doc)
+# get the former k dimension
 k = 10
 Wk = U[:, 0:k]
