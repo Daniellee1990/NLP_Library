@@ -76,4 +76,3 @@ resultByBi = gDomByBi + dgaByBi
 
 NLP_module.plotRoc(resultByUni, y_label)
 NLP_module.plotRoc(resultByBi, y_label)
-

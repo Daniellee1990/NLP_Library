@@ -173,4 +173,3 @@ wordVec2 = word_word[56, :]
 simDice = DiceSim(wordVec1, wordVec2)
 print("sim dice")
 print(simDice)
-    

@@ -224,6 +224,3 @@ nce_start_time = dt.datetime.now()
 run(graph, num_steps)
 nce_end_time = dt.datetime.now()
 print("NCE method took {} minutes to run 100 iterations".format((nce_end_time-nce_start_time).total_seconds()))
-
-
-

@@ -93,6 +93,3 @@ input_target = Input((1,))
 input_context = Input((1,))
 
 embedding = Embedding(vocab_size, vector_dim, input_length=1, name='embedding')
-
-
-
