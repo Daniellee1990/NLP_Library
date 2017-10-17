@@ -10,13 +10,18 @@ from nltk.tag import pos_tag
 from nltk.corpus import wordnet as wn
 from nltk.corpus import stopwords
 from nltk.tokenize import RegexpTokenizer
-#from nltk.wsd import lesk
+import nltk
+from nltk.corpus import treebank
+import re 
+from operator import itemgetter
 
 def strCmp(str1, str2):
     len1 = len(str1)
     len2 = len(str2)
     if len1 != len2:
         return False
+    str1 = str1.lower()
+    str2 = str2.lower()
     for i in range(len1):
         if str1[i] != str2[i]:
             return False
@@ -61,12 +66,15 @@ def SimpleLesk(word, sent):
             best_sense = sense
     return best_sense
     
-sent = "The bank can guarantee deposits will eventually cover future tuition costs because it invests in adjustable-rate mortgage securities."
-word = 'bank'
+sent = "President Donald Trump’s executive order on health care issued Thursday marks the first major salvo in what the White House promises will be an extensive, targeted campaign to unravel the Affordable Care Act administratively."
+word = 'Care'
+word = word.lower()
 
+# simple lesk algorithm
 sense = SimpleLesk(word, sent)
 print(sense.definition())
 
+# Extraction of features
 window_len = 2
 
 tokenizer = RegexpTokenizer(r'\w+')
@@ -97,3 +105,46 @@ for i in range(word_pos + 1, word_pos + window_len + 1):
     after_pair = after_pair + " " + tokens[i]
 col_feature.append(after_pair)  
 
+# get the WSJ and parse the document
+# sumarize the word and its frequency
+wsjs = nltk.corpus.treebank.fileids()
+word2num = dict()
+occurence = 0
+for fileName in wsjs:
+    for cursent in treebank.sents(fileName):
+        if word in cursent:
+            occurence = occurence + 1
+            for wd in cursent:
+                pattern = '[a-z]+'
+                found = re.search(pattern, wd)
+                if re.search(pattern, wd) is None:
+                    continue
+                stop_wds = stopwords.words("english")
+                stop_wds.extend([word, wn.morphy(word), "'s"])
+                if wd.lower() in stop_wds:
+                    continue
+                if wd.lower() in word2num:
+                    word2num[wd.lower()] = word2num.get(wd.lower()) + 1
+                else:
+                    word2num[wd.lower()] = 1
+                    
+if occurence == 0:
+    print("The current word does not appear in WSJ database")
+    
+maxnum = 10
+sorted_dict = sorted(word2num.items(), key=itemgetter(1) , reverse=True)
+top_words = list()
+
+if maxnum > len(sorted_dict):
+    print("The bag of words size is more than that of neighboring words in WSJ")
+    
+for i in range(maxnum):
+    top_words.append(sorted_dict[i][0])
+    
+# get the binary vector/ bag of words
+BoW = list()
+for i in range(maxnum):
+    BoW.append(0)
+for wd in tokens:
+    if wd.lower() in top_words:
+        BoW[top_words.index(wd.lower())] = BoW[top_words.index(wd.lower())] + 1
