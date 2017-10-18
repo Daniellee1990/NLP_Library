@@ -1,0 +1,12 @@
+So what does LDA actually do?
+This explanation is a little lengthy, but useful for understanding the model we worked so hard to generate.
+
+LDA assumes documents are produced from a mixture of topics. Those topics then generate words based on their probability distribution, like the ones in our walkthrough model. In other words, LDA assumes a document is made from the following steps:
+
+Determine the number of words in a document. Let’s say our document has 6 words.
+Determine the mixture of topics in that document. For example, the document might contain 1/2 the topic “health” and 1/2 the topic “vegetables.”
+Using each topic’s multinomial distribution, output words to fill the document’s word slots. In our example, the “health” topic is 1/2 our document, or 3 words. The “health” topic might have the word “diet” at 20% probability or “exercise” at 15%, so it will fill the document word slots based on those probabilities.
+Given this assumption of how documents are created, LDA backtracks and tries to figure out what topics would create those documents in the first place.
+
+reference:
+https://rstudio-pubs-static.s3.amazonaws.com/79360_850b2a69980c4488b1db95987a24867a.html
