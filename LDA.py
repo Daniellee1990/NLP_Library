@@ -7,7 +7,7 @@ Created on Mon Oct 16 09:16:00 2017
 """
 import numpy as np
 import gensim.models
-from gensim import corpora, models
+from gensim import corpora
 from nltk.tokenize import RegexpTokenizer
 
 xi = 100
@@ -63,7 +63,4 @@ word2cnt = corpora.Dictionary(docs)
 corpus = [word2cnt.doc2bow(line) for line in docs]
 print(corpus[0])
 ldamodel = gensim.models.ldamodel.LdaModel(corpus, num_topics=3, id2word = word2cnt, passes=20)
-print(ldamodel.print_topics(num_topics=3, num_words=len(word2cnt.keys())))
-
-    
-    
+print(ldamodel.print_topics(num_topics=3, num_words=len(word2cnt.keys())))   

@@ -74,7 +74,7 @@ word = word.lower()
 sense = SimpleLesk(word, sent)
 print(sense.definition())
 
-# Extraction of features
+# Extraction of features:
 window_len = 2
 
 tokenizer = RegexpTokenizer(r'\w+')
@@ -85,6 +85,7 @@ word_pos = -1
 for i in range(len(tags)):
     if strCmp(tags[i][0], word):
         word_pos = i
+
 # get the collocational feature vector
 col_feature = list()
 for k in range(word_pos - window_len, word_pos):
@@ -105,6 +106,7 @@ for i in range(word_pos + 1, word_pos + window_len + 1):
     after_pair = after_pair + " " + tokens[i]
 col_feature.append(after_pair)  
 
+## get BoW (bag of wrod) features
 # get the WSJ and parse the document
 # sumarize the word and its frequency
 wsjs = nltk.corpus.treebank.fileids()
