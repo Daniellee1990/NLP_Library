@@ -134,6 +134,7 @@ for gd_wd in gd_table.keys():
 test_path = '/Users/lixiaodan/Desktop/ece590/CSDMC2010_SPAM/CSDMC2010_SPAM/test_new'
 tests = os.listdir(test_path)
 
+"""
 for i in range(len(tests)):
     fle = tests[i]
     if str.lower(fle[-3:])=="eml":
@@ -151,5 +152,5 @@ for i in range(len(tests)):
         except UnicodeDecodeError:
             fail_IO.append(fle)
             continue
-
+"""
             
