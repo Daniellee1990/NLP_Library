@@ -266,3 +266,15 @@ def minEditDisWithSwap(src, des):
             else:
                 dis[i][j] = min(min(dis[i - 1][j], dis[i][j - 1]) + 1, dis[i - 1][j - 1] + 1)
     return dis[len(src)][len(des)]
+
+def strCmp(str1, str2):
+    len1 = len(str1)
+    len2 = len(str2)
+    if len1 != len2:
+        return False
+    str1 = str1.lower()
+    str2 = str2.lower()
+    for i in range(len1):
+        if str1[i] != str2[i]:
+            return False
+    return True

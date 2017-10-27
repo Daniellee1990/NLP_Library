@@ -14,7 +14,9 @@ import nltk
 from nltk.corpus import treebank
 import re 
 from operator import itemgetter
+import NLP_module
 
+"""
 def strCmp(str1, str2):
     len1 = len(str1)
     len2 = len(str2)
@@ -26,6 +28,7 @@ def strCmp(str1, str2):
         if str1[i] != str2[i]:
             return False
     return True
+"""
 
 # get the WSD by simple_lesk
 def SimpleLesk(word, sent):
@@ -83,7 +86,7 @@ tags = pos_tag(tokens)
 
 word_pos = -1
 for i in range(len(tags)):
-    if strCmp(tags[i][0], word):
+    if NLP_module.strCmp(tags[i][0], word):
         word_pos = i
 
 # get the collocational feature vector
