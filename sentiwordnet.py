@@ -49,23 +49,15 @@ def builSentimentLexicon(posseeds, negseeds, radius):
     return poslex, neglex
 """
 
-breakdown = swn.senti_synset('breakdown.n.03')
-
-all = swn.all_senti_synsets()
-
-list_synsets = list(swn.senti_synsets('slow'))
-
 posseeds = list()
 negseeds = list()
 
-try:
-    label_path = '/Users/lixiaodan/Desktop/ece590/negative-words.txt'
-    infile = open(label_path,'r')
-    for line in infile:
+label_path = '/Users/lixiaodan/Desktop/ece590/negative-words.txt'
+
+with open(label_path, 'r', encoding = "ISO-8859-1") as input_file:
+    for line in input_file:
         negseeds.append(line.split('\n')[0])
-    infile.close()
-except UnicodeDecodeError:
-    print("Unicode error")
+    input_file.close()
 
 try:
     label_path = '/Users/lixiaodan/Desktop/ece590/positive-words.txt'
@@ -74,7 +66,7 @@ try:
         posseeds.append(line.split('\n')[0])
     infile.close()
 except UnicodeDecodeError:
-    print("Unicode error")
+    print("Positive Unicode error")
 
 poslex = posseeds
 neglex = negseeds
@@ -85,5 +77,8 @@ print(len(poslex))
 poslex = expandSeedsByAnt(poslex, neglex)
 print(len(poslex))
 
+print(len(neglex))
 neglex = expandSeedsBySyn(neglex, radius)
+print(len(neglex))
 neglex = expandSeedsByAnt(neglex, poslex)
+print(len(neglex))

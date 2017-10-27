@@ -11,6 +11,9 @@ import os
 import re
 import html2text
 from nltk.corpus import stopwords
+import math
+import NLP_module
+import ast
 
 """
 Method
@@ -57,10 +60,12 @@ def processTable(words_table):
 labels = dict()
 label_path = '/Users/lixiaodan/Desktop/ece590/CSDMC2010_SPAM/CSDMC2010_SPAM/SPAMTrain.label'
 infile = open(label_path,'r')
+label_List = list()
 for line in infile:
     tp = line.split(" ")[1]
     eml_name = tp.split("\n")[0]
     labels[eml_name] = line.split(" ")[0]
+    label_List.append(line.split(" ")[0])
 infile.close()
 
 path = '/Users/lixiaodan/Desktop/ece590/CSDMC2010_SPAM/CSDMC2010_SPAM/training_new'
@@ -133,24 +138,64 @@ for gd_wd in gd_table.keys():
 # The test case and get the posterior probability
 test_path = '/Users/lixiaodan/Desktop/ece590/CSDMC2010_SPAM/CSDMC2010_SPAM/test_new'
 tests = os.listdir(test_path)
+result = list()
+predict = list()
+test_labels = list()
 
-"""
+##1 stands for a HAM and 0 stands for a SPAM
 for i in range(len(tests)):
     fle = tests[i]
     if str.lower(fle[-3:])=="eml":
         cur_table = dict()
         try:
-            msg = email.message_from_file(open(path + '/' + fle))
+            msg = email.message_from_file(open(test_path + '/' + fle))
             strs = msg.as_string()
             parse(cur_table, strs)
             cur_table = processTable(cur_table)
-            numer = 1
-            ######## get the posterior probability for bad email
+            proBad = 1
+            proGd = 1
+            ######## get the bad posterior probability for email
             for wd in cur_table.keys():
                 if wd in poster_bad.keys():
-                    #numer = 1 + 
+                    proBad = proBad * math.pow(poster_bad[wd], cur_table[wd])
+                else:
+                    proBad = proBad * math.pow((1.0 / (total_bad + v)), cur_table[wd])
+            proBad = proBad * pBad
+            ######## get the good posterior probability for email
+            for wd in cur_table.keys():
+                if wd in poster_gd.keys():
+                    proGd = proGd * math.pow(poster_gd[wd], cur_table[wd])
+                else:
+                    proGd = proGd * math.pow((1.0 / (total_gd + v)), cur_table[wd])
+            proGd = proGd * pGood
+            pair = list()
+            pair.append(fle)
+            if proBad > proGd:
+                pair.append(0)
+                predict.append(0)
+            else:
+                pair.append(1)
+                predict.append(1)
+            test_labels.append(ast.literal_eval(labels[fle]))
+            result.append(pair)
         except UnicodeDecodeError:
             fail_IO.append(fle)
             continue
-"""
-            
+        
+NLP_module.plotRoc(predict, test_labels)
+detec_spam = 0
+tt_spam = 0
+detec_good = 0
+tt_good = 0
+for i in range(len(predict)):
+    if test_labels[i] == 0:
+        tt_spam = tt_spam + 1
+        if predict[i] == 0:
+            detec_spam = detec_spam + 1
+    if test_labels[i] == 1:
+        tt_good = tt_good + 1
+        if predict[i] == 1:
+            detec_good = detec_good + 1
+spam_rate = 1.0 * detec_spam / tt_spam
+good_rate = 1.0 * detec_good / tt_good
+        
