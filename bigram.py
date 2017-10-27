@@ -11,7 +11,8 @@ import numpy as np
 import math
 import NLP_module
 
-df = pd.read_csv('/Users/lixiaodan/Desktop/ece590/DGA/top-1m.csv', header=None)
+df = pd.read_csv('/Users/lixiaodan/NLPkit/DataSet/top-1m.csv', header=None)
+
 goodNames = df[1]
 gDomains = list()
 for i in range(len(goodNames)):
@@ -37,34 +38,34 @@ print(goodMean)
 print(np.min(gPPWs))
 print(np.max(gPPWs))
 
-url = '/Users/lixiaodan/Desktop/ece590/DGA/conficker.txt'
+url = '/Users/lixiaodan/NLPkit/DataSet/DGA_data_set/conficker.txt'
 print("PPW for conficker")
 NLP_module.printStaticsPPW(url, logMatrix, chars)
 
-url = '/Users/lixiaodan/Desktop/ece590/DGA/cryptolocker.txt'
+url = '/Users/lixiaodan/NLPkit/DataSet/DGA_data_set/cryptolocker.txt'
 print("PPW for cryptolocker")
 NLP_module.printStaticsPPW(url, logMatrix, chars)
 
-url = '/Users/lixiaodan/Desktop/ece590/DGA/opendns-random-domains.txt'
+url = '/Users/lixiaodan/NLPkit/DataSet/DGA_data_set/opendns-random-domains.txt'
 print("PPW for opendns-random-domains")
 NLP_module.printStaticsPPW(url, logMatrix, chars)
 
-url = '/Users/lixiaodan/Desktop/ece590/DGA/zeus.txt'
+url = '/Users/lixiaodan/NLPkit/DataSet/DGA_data_set/zeus.txt'
 print("PPW for zeus")
 NLP_module.printStaticsPPW(url, logMatrix, chars)
 
-url = '/Users/lixiaodan/Desktop/ece590/DGA/tinba.txt'
+url = '/Users/lixiaodan/NLPkit/DataSet/DGA_data_set/tinba.txt'
 print("PPW for tinba")
 NLP_module.printStaticsPPW(url, logMatrix, chars)
 
-url = '/Users/lixiaodan/Desktop/ece590/DGA/rovnix.txt'
+url = '/Users/lixiaodan/NLPkit/DataSet/DGA_data_set/rovnix.txt'
 print("PPW for rovnix")
 NLP_module.printStaticsPPW(url, logMatrix, chars)
 
-url = '/Users/lixiaodan/Desktop/ece590/DGA/ramdo.txt'
+url = '/Users/lixiaodan/NLPkit/DataSet/DGA_data_set/ramdo.txt'
 print("PPW for ramdo")
 NLP_module.printStaticsPPW(url, logMatrix, chars)
 
-url = '/Users/lixiaodan/Desktop/ece590/DGA/pushdo.txt'
+url = '/Users/lixiaodan/NLPkit/DataSet/DGA_data_set/pushdo.txt'
 print("PPW for pushdo")
 NLP_module.printStaticsPPW(url, logMatrix, chars)

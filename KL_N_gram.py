@@ -5,7 +5,7 @@ Spyder Editor
 import pandas as pd
 import NLP_module
 
-df = pd.read_csv('/Users/lixiaodan/Desktop/ece590/DGA/top-1m.csv', header=None)
+df = pd.read_csv('/Users/lixiaodan/NLPkit/DataSet/top-1m.csv', header=None)
 goodNames = df[1]
 gDomains = list()
 for i in range(len(goodNames)):
@@ -23,7 +23,8 @@ bbigramPro = NLP_module.getBigramPro(trainGDom)
         
 # get malicious letters distribution
 #file = open('/Users/lixiaodan/Desktop/ece590/DGA/conficker.txt', 'r')
-file = open('/Users/lixiaodan/Desktop/ece590/DGA/zeus.txt', 'r')
+file = open('/Users/lixiaodan/NLPkit/DataSet/DGA_data_set/zeus.txt', 'r')
+
 dgas = list()
 for line in file:
     dga = line.split('.')[0]
