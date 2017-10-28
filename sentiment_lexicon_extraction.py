@@ -133,6 +133,8 @@ try:
 except UnicodeDecodeError:
     print("Positive Unicode error")
 
+extensionP = list()
+extensionN = list()
 """
 #################### using WordNet synonyms and antonyms ###################
 poslex = posseeds
@@ -145,10 +147,8 @@ neglex = expandSeedsBySyn(neglex, radius)
 neglex = expandSeedsByAnt(neglex, poslex)
 """
 
-#################### using seed words and adjective coordination ################
-extensionP = list()
-extensionN = list()
 """
+#################### using seed words and adjective coordination ################
 prefixes = ["un", "im"]
 postfixes = ["less"]
 for wd in posseeds:
@@ -168,6 +168,7 @@ print(extensionN)
 extensionP = extensionP + ext_pos + ext_pos_post + ext_pos_pref
 extensionN = extensionN + ext_neg + ext_neg_post + ext_neg_pref
 """
+
 ### another way to get and, but adjs.
 wsjs = nltk.corpus.treebank.fileids()
 but_hash = dict()
@@ -236,6 +237,21 @@ for wd in negseeds:
         extensionP = extensionP + list(but_hash.get(wd))
         extensionP = list(set(extensionP))
 
+"""
+### Pointwise mutual information #####
+## Step 1: extract phrases ##
+target = "fast"  
+seed = "easy"      
+wsjs = nltk.corpus.treebank.fileids()
+for filename in wsjs:
+    for cursent in treebank.tagged_sents(fileName):
+        for i in range(len(cursent)):
+"""            
+            
+
+
+
+        
 
 
 
