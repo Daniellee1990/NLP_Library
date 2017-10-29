@@ -9,6 +9,7 @@ import nltk
 from nltk.corpus import wordnet as wn
 from nltk.corpus import treebank
 import NLP_module 
+import math
 
 def expandSeedsBySyn(seeds, radius):    
     cur_seeds = seeds
@@ -169,6 +170,7 @@ extensionP = extensionP + ext_pos + ext_pos_post + ext_pos_pref
 extensionN = extensionN + ext_neg + ext_neg_post + ext_neg_pref
 """
 
+"""
 ### another way to get and, but adjs.
 wsjs = nltk.corpus.treebank.fileids()
 but_hash = dict()
@@ -236,27 +238,73 @@ for wd in negseeds:
     if wd in but_hash.keys():
         extensionP = extensionP + list(but_hash.get(wd))
         extensionP = list(set(extensionP))
-
 """
+
 ### Pointwise mutual information #####
 ## Step 1: extract phrases ##
-target = "fast"  
-seed = "easy"      
+target = 'easy'  
+#seed = 'easy'
+k = 2      
+phrase_pattern = list()
 wsjs = nltk.corpus.treebank.fileids()
+N = 0
 for filename in wsjs:
-    for cursent in treebank.tagged_sents(fileName):
+    for cursent in treebank.tagged_sents(filename):
+        N  = N + len(cursent)
         for i in range(len(cursent)):
-"""            
-            
+            if NLP_module.strCmp(cursent[i][1], 'JJ') == True:
+                k = 1
+                while (i + k < len(cursent)):
+                    if NLP_module.strCmp(cursent[i + k][1], 'NN') == True or NLP_module.strCmp(cursent[i + k][1], 'NNS') == True:
+                        pair = list()
+                        pair.append(cursent[i])
+                        pair.append(cursent[i + k])
+                        phrase_pattern.append(pair)
+                    k = k + 1
+            if NLP_module.strCmp(cursent[i][1], 'RB') == True or NLP_module.strCmp(cursent[i][1], 'RBR') == True or NLP_module.strCmp(cursent[i][1], 'RBS') == True:
+                k = 1
+                while (i + k < len(cursent)):
+                    if NLP_module.strCmp(cursent[i + k][1], 'VB') == True or NLP_module.strCmp(cursent[i + k][1], 'VBD') == True or NLP_module.strCmp(cursent[i + k][1], 'VBN') == True or NLP_module.strCmp(cursent[i + k][1], 'VBG') == True:
+                        pair = list()
+                        pair.append(cursent[i])
+                        pair.append(cursent[i + k])
+                        phrase_pattern.append(pair)
+                    k = k + 1
+            if NLP_module.strCmp(cursent[i][1], 'RB') == True or NLP_module.strCmp(cursent[i][1], 'RBR') == True or NLP_module.strCmp(cursent[i][1], 'RBS') == True or NLP_module.strCmp(cursent[i][1], 'JJ') == True or NLP_module.strCmp(cursent[i][1], 'NN') == True or NLP_module.strCmp(cursent[i][1], 'NNS') == True:
+                k = 1
+                while (i + k < len(cursent)):
+                    if NLP_module.strCmp(cursent[i + k][1], 'JJ') == True:
+                        if i + k == len(cursent) - 1:
+                            pair = list()
+                            pair.append(cursent[i])
+                            pair.append(cursent[i + k])
+                            phrase_pattern.append(pair)
+                        elif NLP_module.strCmp(cursent[i + k + 1][1], 'NN') == False and NLP_module.strCmp(cursent[i + k + 1][1], 'NNS') == False:
+                            pair = list()
+                            pair.append(cursent[i])
+                            pair.append(cursent[i + k])
+                            phrase_pattern.append(pair)
+                    k = k + 1
 
-
-
-        
-
-
-
-
-
-
-                
-        
+PosPMI = 0 
+for seed in posseeds:
+    concur = 0
+    wdhit = 0
+    seedhit = 0 
+    for phrase in phrase_pattern:
+        if NLP_module.strCmp(phrase[0][0], target) == True and NLP_module.strCmp(phrase[1][0], seed) == True:
+            concur = concur + 1
+        if NLP_module.strCmp(phrase[0][0], seed) == True and NLP_module.strCmp(phrase[1][0], target) == True:
+            concur = concur + 1
+        if NLP_module.strCmp(phrase[0][0], seed) == True and NLP_module.strCmp(phrase[1][0], seed) == True:
+            seedhit = seedhit + 1
+        if NLP_module.strCmp(phrase[0][0], target) == True and NLP_module.strCmp(phrase[1][0], target) == True:
+            wdhit = wdhit + 1
+    numer = (1.0 / (k * N)) * concur
+    denom = (1.0 / N) * wdhit * (1.0 / N) * seedhit
+    PMI = 0
+    if numer != 0 and denom != 0:
+        PMI = math.log2(numer / denom)
+    PosPMI = PosPMI + PMI
+    if PMI != 0:
+        print(seed)
