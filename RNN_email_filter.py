@@ -8,102 +8,10 @@ from tensorflow.python.framework import ops
 import NLP_module
 import html2text
 from nltk.corpus import stopwords
-import NLP_module
 ops.reset_default_graph()
 
 """
 https://github.com/nfmcclure/tensorflow_cookbook/blob/master/09_Recurrent_Neural_Networks/02_Implementing_RNN_for_Spam_Prediction/02_implementing_rnn.py
-"""
-
-"""
-# Create a text cleaning function
-def clean_text(text_string):
-    text_string = re.sub(r'([^\s\w]|_|[0-9])+', '', text_string)
-    text_string = " ".join(text_string.split())
-    text_string = text_string.lower()
-    return(text_string)
-
-# Start a graph
-sess = tf.Session()
-
-# Set RNN parameters
-epochs = 50
-batch_size = 200
-max_sequence_length = 200
-rnn_size = 10
-embedding_size = 50
-min_word_frequency = 10
-learning_rate = 0.0005
-dropout_keep_prob = tf.placeholder(tf.float32)
-
-# Download or open data
-data_dir = 'temp'
-data_file = 'text_data.txt'
-if not os.path.exists(data_dir):
-    os.makedirs(data_dir)
-
-if not os.path.isfile(os.path.join(data_dir, data_file)):
-    zip_url = 'http://archive.ics.uci.edu/ml/machine-learning-databases/00228/smsspamcollection.zip'
-    r = requests.get(zip_url)
-    z = ZipFile(io.BytesIO(r.content))
-    file = z.read('SMSSpamCollection')
-    # Format Data
-    text_data = file.decode()
-    text_data = text_data.encode('ascii',errors='ignore')
-    text_data = text_data.decode().split('\n')
-
-    # Save data to text file
-    with open(os.path.join(data_dir, data_file), 'w') as file_conn:
-        for text in text_data:
-            file_conn.write("{}\n".format(text))
-else:
-    # Open data from text file
-    text_data = []
-    with open(os.path.join(data_dir, data_file), 'r') as file_conn:
-        for row in file_conn:
-            text_data.append(row)
-    text_data = text_data[:-1]
-
-text_data = [x.split('\t') for x in text_data if len(x)>=1]
-[text_data_target, text_data_train] = [list(x) for x in zip(*text_data)]
-
-labels = dict()
-label_path = '/Users/lixiaodan/Desktop/ece590/CSDMC2010_SPAM/CSDMC2010_SPAM/SPAMTrain.label'
-infile = open(label_path,'r')
-label_List = list()
-for line in infile:
-    tp = line.split(" ")[1]
-    eml_name = tp.split("\n")[0]
-    labels[eml_name] = line.split(" ")[0]
-    label_List.append(line.split(" ")[0])
-infile.close()
-
-path = '/Users/lixiaodan/Desktop/ece590/CSDMC2010_SPAM/CSDMC2010_SPAM/training_new'
-listing = os.listdir(path)
-
-fail_IO = list()
-gd_cnt = 0
-bad_cnt = 0
-text_target = list()
-text_data_train = list()
-
-for i in range(len(listing)):
-    fle = listing[i]
-    if str.lower(fle[-3:])=="eml":
-        try:
-            msg = email.message_from_file(open(path + '/' + fle))
-            strs = msg.as_string()
-            text_data_train.append(clean_text(strs))
-            #print(strs)
-            if labels[fle] == "1":
-                gd_cnt = gd_cnt + 1
-                text_target.append(1)
-            else:
-                bad_cnt = bad_cnt + 1
-                text_target.append(0)
-        except UnicodeDecodeError:
-            fail_IO.append(fle)
-            continue
 """
 
 # Create a text cleaning function
