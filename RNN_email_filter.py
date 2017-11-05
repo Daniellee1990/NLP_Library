@@ -201,8 +201,6 @@ for epoch in range(epochs):
     test_predcor.append(temp_test_predcor)
     test_pred.append(temp_test_prediction)
     print('Epoch: {}, Test Loss: {:.2}, Test Acc: {:.2}'.format(epoch+1, temp_test_loss, temp_test_acc))
-    #print(temp_test_pred)
-    #print(sess.run(y_test, feed_dict={x_data: x_test}))
     
 # Plot loss over time
 epoch_seq = np.arange(1, epochs+1)
