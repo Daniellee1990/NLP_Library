@@ -16,20 +16,6 @@ import re
 from operator import itemgetter
 import NLP_module
 
-"""
-def strCmp(str1, str2):
-    len1 = len(str1)
-    len2 = len(str2)
-    if len1 != len2:
-        return False
-    str1 = str1.lower()
-    str2 = str2.lower()
-    for i in range(len1):
-        if str1[i] != str2[i]:
-            return False
-    return True
-"""
-
 # get the WSD by simple_lesk
 def SimpleLesk(word, sent):
     res = dict()
