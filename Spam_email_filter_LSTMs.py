@@ -8,43 +8,23 @@ Created on Sat Nov  4 15:01:46 2017
 
 import numpy as np
 import email
-#import tensorflow as tf
 import html2text
 import re
 import os
 import NLP_module
 import collections
 from nltk.corpus import stopwords
-#from keras.datasets import imdb
-from keras.models import Sequential
-from keras.layers import Dense
-from keras.layers import LSTM
-from keras.layers.embeddings import Embedding
 from keras.preprocessing import sequence
+import LSTMSentenceClassifier
 
 """
 https://machinelearningmastery.com/sequence-classification-lstm-recurrent-neural-networks-python-keras/
 Simple LSTM for Sequence Classification
 """
-
-# create the model
-def LSTM_Dropout_Sentence_Classifier(numHidden,top_words, embedding_vector_length, max_review_length, epochs, batch_size, X_train, X_test, y_train, y_test):
-    model = Sequential()
-    model.add(Embedding(top_words, embedding_vector_length, input_length=max_review_length))
-    model.add(LSTM(numHidden))
-    model.add(Dense(1, activation='sigmoid'))
-    model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
-    print(model.summary())
-    model.fit(X_train, y_train, epochs, batch_size)
-    # Final evaluation of the model
-    scores = model.evaluate(X_test, y_test, verbose=0)
-    print("Accuracy: %.2f%%" % (scores[1]*100))
-
 # fix random seed for reproducibility
 np.random.seed(7)
 # load the dataset but only keep the top n words, zero the rest
 top_words = 5000
-#(X_train, y_train), (X_test, y_test) = imdb.load_data(num_words=top_words)
 
 # Build word vocabulary function
 def build_vocab(text, top_words):
@@ -155,7 +135,6 @@ for s_text in text_data_train:
 # Shuffle and split data
 text_processed = np.array(text_processed)
 text_data_target = np.array(text_target)
-#text_data_target = np.array([1 if x=='ham' else 0 for x in text_data_target])
 shuffled_ix = np.random.permutation(np.arange(len(text_data_target)))
 x_shuffled = text_processed[shuffled_ix]
 y_shuffled = text_data_target[shuffled_ix]
@@ -164,8 +143,6 @@ y_shuffled = text_data_target[shuffled_ix]
 ix_cutoff = int(len(y_shuffled)*0.80)
 X_train, X_test = x_shuffled[:ix_cutoff], x_shuffled[ix_cutoff:]
 y_train, y_test = y_shuffled[:ix_cutoff], y_shuffled[ix_cutoff:]
-#vocab_size = len(vocab_processor.vocabulary_)
-#print("Vocabulary Size: {:d}".format(vocab_size))
 print("80-20 Train Test split: {:d} -- {:d}".format(len(y_train), len(y_test)))
 
 # truncate and pad input sequences
@@ -174,8 +151,13 @@ X_train = sequence.pad_sequences(X_train, maxlen=max_review_length)
 X_test = sequence.pad_sequences(X_test, maxlen=max_review_length)
 embedding_vector_length = 32
 numHidden = 100
-epochs = 50
-batch_size=64
+epochs = 40
+batch_size = 64
+dropoutRate = 0.2
 
-# create the model
-LSTM_Dropout_Sentence_Classifier(numHidden,top_words, embedding_vector_length, max_review_length, epochs, batch_size, X_train, X_test, y_train, y_test)
+print("\n The result for regular LSTM classifier")
+LSTMSentenceClassifier.LSTM_Sentence_Classifier(numHidden,top_words, embedding_vector_length, max_review_length, epochs, batch_size, X_train, X_test, y_train, y_test)
+print("\n The result for LSTM CNN classifier")
+LSTMSentenceClassifier.LSTM_CNN_sequence_classification.CNN_LSTM_Sentence_Classifier(numHidden,top_words, embedding_vector_length, max_review_length, epochs, batch_size, X_train, X_test, y_train, y_test)
+print("\n The result for LSTM model with dropout")
+LSTMSentenceClassifier.LSTM_with_dropout.LSTM_Dropout_Sentence_Classifier(dropoutRate, numHidden, top_words, embedding_vector_length, max_review_length, epochs, batch_size, X_train, X_test, y_train, y_test)
