@@ -18,7 +18,7 @@ The code in this file is based on the following source code:
 https://machinelearningmastery.com/sequence-classification-lstm-recurrent-neural-networks-python-keras/
 """
 
-def LSTM_Sentence_Classifier(numHidden,top_words, embedding_vector_length, max_review_length, epochs, batch_size, X_train, X_test, y_train, y_test):
+def LSTM_Sentence_Classifier(numHidden,top_words, embedding_vector_length, max_review_length, epochs, batch_size, X_train, y_train):
     model = Sequential()
     model.add(Embedding(top_words, embedding_vector_length, input_length=max_review_length))
     model.add(LSTM(numHidden))
@@ -26,11 +26,16 @@ def LSTM_Sentence_Classifier(numHidden,top_words, embedding_vector_length, max_r
     model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
     print(model.summary())
     model.fit(X_train, y_train, batch_size, epochs)
+    return model
+    """
     # Final evaluation of the model
+    result = model.predict(X_test)
+    print(result)
     scores = model.evaluate(X_test, y_test, verbose=0)
     print("Accuracy: %.2f%%" % (scores[1]*100))
+    """
     
-def LSTM_Dropout_Sentence_Classifier(dropoutRate, numHidden, top_words, embedding_vector_length, max_review_length, epochs, batch_size, X_train, X_test, y_train, y_test):
+def LSTM_Dropout_Sentence_Classifier(dropoutRate, numHidden, top_words, embedding_vector_length, max_review_length, epochs, batch_size, X_train, y_train):
     model = Sequential()
     model.add(Embedding(top_words, embedding_vector_length, input_length=max_review_length))
     model.add(Dropout(dropoutRate))
@@ -40,11 +45,14 @@ def LSTM_Dropout_Sentence_Classifier(dropoutRate, numHidden, top_words, embeddin
     model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
     print(model.summary())
     model.fit(X_train, y_train, batch_size, epochs)
+    return model
+    """
     # Final evaluation of the model
     scores = model.evaluate(X_test, y_test, verbose=0)
     print("Accuracy: %.2f%%" % (scores[1]*100))
-
-def CNN_LSTM_Sentence_Classifier(numHidden,top_words, embedding_vector_length, max_review_length, epochs, batch_size, X_train, X_test, y_train, y_test):
+    """
+    
+def CNN_LSTM_Sentence_Classifier(numHidden,top_words, embedding_vector_length, max_review_length, epochs, batch_size, X_train, y_train):
     # create the model
     model = Sequential()
     model.add(Embedding(top_words, embedding_vector_length, input_length=max_review_length))
@@ -55,6 +63,10 @@ def CNN_LSTM_Sentence_Classifier(numHidden,top_words, embedding_vector_length, m
     model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
     print(model.summary())
     model.fit(X_train, y_train, batch_size, epochs)
+    return model
+    """
     # Final evaluation of the model
     scores = model.evaluate(X_test, y_test, verbose=0)
     print("Accuracy: %.2f%%" % (scores[1]*100))
+    """
+    

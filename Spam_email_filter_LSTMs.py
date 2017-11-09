@@ -156,8 +156,34 @@ batch_size = 64
 dropoutRate = 0.2
 
 print("\n The result for regular LSTM classifier")
-LSTMSentenceClassifier.LSTM_Sentence_Classifier(numHidden,top_words, embedding_vector_length, max_review_length, epochs, batch_size, X_train, X_test, y_train, y_test)
+regular_LSTM = LSTMSentenceClassifier.LSTM_Sentence_Classifier(numHidden,top_words, embedding_vector_length, max_review_length, epochs, batch_size, X_train, y_train)
+result_regular = regular_LSTM.predict(X_test)
+binRegular = np.zeros((len(result_regular), 1), dtype=np.int)
+for i in range(len(result_regular)):
+    if result_regular[i,0] >= 0.5:
+        binRegular[i,0] = 1 
+NLP_module.plotRoc(binRegular, y_test)
+scores = regular_LSTM.evaluate(X_test, y_test, verbose=0)
+print("Regular LSTM Accuracy: %.2f%%" % (scores[1]*100))
+
 print("\n The result for LSTM CNN classifier")
-LSTMSentenceClassifier.LSTM_CNN_sequence_classification.CNN_LSTM_Sentence_Classifier(numHidden,top_words, embedding_vector_length, max_review_length, epochs, batch_size, X_train, X_test, y_train, y_test)
+LSTM_CNN = LSTMSentenceClassifier.CNN_LSTM_Sentence_Classifier(numHidden,top_words, embedding_vector_length, max_review_length, epochs, batch_size, X_train, y_train)
+result_LSTM_CNN = LSTM_CNN.predict(X_test)
+binLSTMCNN = np.zeros((len(result_LSTM_CNN), 1), dtype=np.int)
+for i in range(len(result_LSTM_CNN)):
+    if result_LSTM_CNN[i,0] >= 0.5:
+        binLSTMCNN[i,0] = 1 
+NLP_module.plotRoc(binLSTMCNN, y_test)
+scores = LSTM_CNN.evaluate(X_test, y_test, verbose=0)
+print("LSTM_CNN Accuracy: %.2f%%" % (scores[1]*100))
+
 print("\n The result for LSTM model with dropout")
-LSTMSentenceClassifier.LSTM_with_dropout.LSTM_Dropout_Sentence_Classifier(dropoutRate, numHidden, top_words, embedding_vector_length, max_review_length, epochs, batch_size, X_train, X_test, y_train, y_test)
+LSTM_Dropout = LSTMSentenceClassifier.LSTM_with_dropout(dropoutRate, numHidden, top_words, embedding_vector_length, max_review_length, epochs, batch_size, X_train, y_train)
+result_LSTM_dropout = LSTM_Dropout.predict(X_test)
+binLSTMDrop = np.zeros((len(result_LSTM_dropout), 1), dtype=np.int)
+for i in range(len(result_LSTM_dropout)):
+    if result_LSTM_dropout[i,0] >= 0.5:
+        binLSTMDrop[i,0] = 1 
+NLP_module.plotRoc(binLSTMDrop, y_test)
+scores = LSTM_Dropout.evaluate(X_test, y_test, verbose=0)
+print("LSTM_dropout Accuracy: %.2f%%" % (scores[1]*100))
