@@ -17,6 +17,10 @@ from nltk.corpus import stopwords
 from keras.preprocessing import sequence
 import LSTMSentenceClassifier
 
+from keras.models import Sequential
+from keras.layers import LSTM, Dense
+from keras.layers.embeddings import Embedding
+
 """
 https://machinelearningmastery.com/sequence-classification-lstm-recurrent-neural-networks-python-keras/
 Simple LSTM for Sequence Classification
@@ -151,14 +155,24 @@ X_train = sequence.pad_sequences(X_train, maxlen=max_review_length)
 X_test = sequence.pad_sequences(X_test, maxlen=max_review_length)
 embedding_vector_length = 32
 numHidden = 100
-epochs = 40
+epochs = 10 # 40
 batch_size = 64
 dropoutRate = 0.2
+
+CNN_model = LSTMSentenceClassifier.CNN_Sentence_Classifier(dropoutRate, top_words, embedding_vector_length, max_review_length, epochs, batch_size, X_train, y_train)
+scores = CNN_model.evaluate(X_test, y_test, batch_size)
+print("CNN Accuracy: %.2f%%" % (scores[1]*100))
+
+timesteps = 10
+stacked_LSTM = LSTMSentenceClassifier.Stacked_LSTM_Sentence_Classifier(timesteps, numHidden,top_words, embedding_vector_length, max_review_length, epochs, batch_size, X_train, y_train)
+scores = stacked_LSTM.evaluate(X_test, y_test, verbose=0)
+print("Stacked LSTM Accuracy: %.2f%%" % (scores[1]*100))
 
 print("\n The result for regular LSTM classifier")
 regular_LSTM = LSTMSentenceClassifier.LSTM_Sentence_Classifier(numHidden,top_words, embedding_vector_length, max_review_length, epochs, batch_size, X_train, y_train)
 result_regular = regular_LSTM.predict(X_test)
 binRegular = np.zeros((len(result_regular), 1), dtype=np.int)
+
 for i in range(len(result_regular)):
     if result_regular[i,0] >= 0.5:
         binRegular[i,0] = 1 
@@ -178,7 +192,7 @@ scores = LSTM_CNN.evaluate(X_test, y_test, verbose=0)
 print("LSTM_CNN Accuracy: %.2f%%" % (scores[1]*100))
 
 print("\n The result for LSTM model with dropout")
-LSTM_Dropout = LSTMSentenceClassifier.LSTM_with_dropout(dropoutRate, numHidden, top_words, embedding_vector_length, max_review_length, epochs, batch_size, X_train, y_train)
+LSTM_Dropout = LSTMSentenceClassifier.LSTM_Dropout_Sentence_Classifier(dropoutRate, numHidden, top_words, embedding_vector_length, max_review_length, epochs, batch_size, X_train, y_train)
 result_LSTM_dropout = LSTM_Dropout.predict(X_test)
 binLSTMDrop = np.zeros((len(result_LSTM_dropout), 1), dtype=np.int)
 for i in range(len(result_LSTM_dropout)):
