@@ -248,6 +248,7 @@ total_spam = detec_spam + non_detec_spam
 total_good = detec_good + non_detec_good
 spam_rate = 1.0 * detec_spam / (detec_spam + non_detec_spam)
 good_rate = 1.0 * detec_good / (detec_good + non_detec_good)
+accuracy = 1.0 * (detec_spam + detec_good) / (len(prediction))
 print("Total spam email")
 print(total_spam)
 print("Total good email")
@@ -256,3 +257,5 @@ print("Spam rate is")
 print(spam_rate)
 print("Good rate is")
 print(good_rate)
+print("Accuracy")
+print(accuracy)

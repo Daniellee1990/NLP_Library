@@ -155,19 +155,22 @@ X_train = sequence.pad_sequences(X_train, maxlen=max_review_length)
 X_test = sequence.pad_sequences(X_test, maxlen=max_review_length)
 embedding_vector_length = 32
 numHidden = 100
-epochs = 10 # 40
+epochs = 40 # 40
 batch_size = 64
 dropoutRate = 0.2
 
 CNN_model = LSTMSentenceClassifier.CNN_Sentence_Classifier(dropoutRate, top_words, embedding_vector_length, max_review_length, epochs, batch_size, X_train, y_train)
 scores = CNN_model.evaluate(X_test, y_test, batch_size)
 print("CNN Accuracy: %.2f%%" % (scores[1]*100))
+res_CNN = CNN_model.predict(X_test)
+binCNN = np.zeros((len(res_CNN), 1), dtype=np.int)
+for k in range(len(res_CNN)):
+    if res_CNN[k, 0] >= 0.5:
+        binCNN[k, 0] = 1
+NLP_module.plotRoc(binCNN, y_test)
 
 timesteps = 10
-stacked_LSTM = LSTMSentenceClassifier.Stacked_LSTM_Sentence_Classifier(timesteps, numHidden,top_words, embedding_vector_length, max_review_length, epochs, batch_size, X_train, y_train)
-scores = stacked_LSTM.evaluate(X_test, y_test, verbose=0)
-print("Stacked LSTM Accuracy: %.2f%%" % (scores[1]*100))
-
+epochs = 40
 print("\n The result for regular LSTM classifier")
 regular_LSTM = LSTMSentenceClassifier.LSTM_Sentence_Classifier(numHidden,top_words, embedding_vector_length, max_review_length, epochs, batch_size, X_train, y_train)
 result_regular = regular_LSTM.predict(X_test)
@@ -201,3 +204,14 @@ for i in range(len(result_LSTM_dropout)):
 NLP_module.plotRoc(binLSTMDrop, y_test)
 scores = LSTM_Dropout.evaluate(X_test, y_test, verbose=0)
 print("LSTM_dropout Accuracy: %.2f%%" % (scores[1]*100))
+
+timesteps = 10
+stacked_LSTM = LSTMSentenceClassifier.Stacked_LSTM_Sentence_Classifier(timesteps, numHidden,top_words, embedding_vector_length, max_review_length, epochs, batch_size, X_train, y_train)
+res_stacked_LSTM = stacked_LSTM.predict(X_test)
+scores = stacked_LSTM.evaluate(X_test, y_test, verbose=0)
+print("Stacked LSTM Accuracy: %.2f%%" % (scores[1]*100))
+binStack = np.zeros((len(res_stacked_LSTM), 1), dtype=np.int)
+for i in range(len(binStack)):
+    if res_stacked_LSTM[i,0] >= 0.5:
+        binStack[i, 0] = 1
+NLP_module.plotRoc(binStack, y_test)

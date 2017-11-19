@@ -197,4 +197,5 @@ for i in range(len(predict)):
         if predict[i] == 1:
             detec_good = detec_good + 1
 spam_rate = 1.0 * detec_spam / tt_spam
-good_rate = 1.0 * detec_good / tt_good       
+good_rate = 1.0 * detec_good / tt_good 
+accuracy = 1.0 * (detec_spam + detec_good) / (tt_spam + tt_good)      
