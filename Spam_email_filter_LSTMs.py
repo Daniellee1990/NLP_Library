@@ -78,7 +78,7 @@ def clean_text(text_string):
     return(text_string)
 
 labels = dict()
-label_path = '/Users/lixiaodan/Desktop/ece590/CSDMC2010_SPAM/CSDMC2010_SPAM/SPAMTrain.label'
+label_path = '/Users/lixiaodan/Desktop/duke/ece590/CSDMC2010_SPAM/CSDMC2010_SPAM/SPAMTrain.label'
 infile = open(label_path,'r')
 label_List = list()
 for line in infile:
@@ -88,7 +88,7 @@ for line in infile:
     label_List.append(line.split(" ")[0])
 infile.close()
 
-path = '/Users/lixiaodan/Desktop/ece590/CSDMC2010_SPAM/CSDMC2010_SPAM/training_new'
+path = '/Users/lixiaodan/Desktop/duke/ece590/CSDMC2010_SPAM/CSDMC2010_SPAM/training_new'
 listing = os.listdir(path)
 listing = listing
 
@@ -118,7 +118,7 @@ for i in range(len(listing)):
             fail_IO.append(fle)
             continue
 min_word_freq = 100
-max_review_length = 500
+max_review_length = 100 #250 ## 500
 ix2word, word2ix = build_vocab(texts, top_words)
 text_processed = list()
 # Convert text to word vectors
@@ -131,10 +131,10 @@ for s_text in text_data_train:
         except:
             s_text_ix.append(0)
     cur_text_ix = s_text_ix[0:max_review_length]
-    if len(cur_text_ix) < 500:
-        for i in range(500 - len(cur_text_ix)):
+    if len(cur_text_ix) < max_review_length:
+        for i in range(max_review_length - len(cur_text_ix)):
             cur_text_ix.append(0)
-    text_processed.append(cur_text_ix)
+    text_processed.append(cur_text_ix) 
     
 # Shuffle and split data
 text_processed = np.array(text_processed)
@@ -150,7 +150,7 @@ y_train, y_test = y_shuffled[:ix_cutoff], y_shuffled[ix_cutoff:]
 print("80-20 Train Test split: {:d} -- {:d}".format(len(y_train), len(y_test)))
 
 # truncate and pad input sequences
-max_review_length = 500
+#max_review_length = 100 ## 250
 X_train = sequence.pad_sequences(X_train, maxlen=max_review_length)
 X_test = sequence.pad_sequences(X_test, maxlen=max_review_length)
 embedding_vector_length = 32
@@ -159,9 +159,10 @@ epochs = 40 # 40
 batch_size = 64
 dropoutRate = 0.2
 
+max_review_length = 100
 CNN_model = LSTMSentenceClassifier.CNN_Sentence_Classifier(dropoutRate, top_words, embedding_vector_length, max_review_length, epochs, batch_size, X_train, y_train)
 scores = CNN_model.evaluate(X_test, y_test, batch_size)
-print("CNN Accuracy: %.2f%%" % (scores[1]*100))
+print("\n CNN Accuracy: %.2f%%" % (scores[1]*100))
 res_CNN = CNN_model.predict(X_test)
 binCNN = np.zeros((len(res_CNN), 1), dtype=np.int)
 for k in range(len(res_CNN)):
@@ -172,6 +173,7 @@ NLP_module.plotRoc(binCNN, y_test)
 timesteps = 10
 epochs = 40
 print("\n The result for regular LSTM classifier")
+#max_review_length = 500
 regular_LSTM = LSTMSentenceClassifier.LSTM_Sentence_Classifier(numHidden,top_words, embedding_vector_length, max_review_length, epochs, batch_size, X_train, y_train)
 result_regular = regular_LSTM.predict(X_test)
 binRegular = np.zeros((len(result_regular), 1), dtype=np.int)

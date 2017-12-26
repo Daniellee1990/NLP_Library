@@ -23,6 +23,7 @@ def clean_text(text_string):
     txt = txt.lower()
     p = re.compile('\W+')
     splits  = p.split(txt)
+    print(splits)
     result = ""
     start_to_parse = False
     for word in splits:
@@ -49,7 +50,7 @@ sess = tf.Session()
 # Set RNN parameters
 epochs = 50
 batch_size = 200
-max_sequence_length = 100
+max_sequence_length = 100 ## 100
 rnn_size = 10
 embedding_size = 50
 min_word_frequency = 10
@@ -84,6 +85,7 @@ for i in range(len(listing)):
             msg = email.message_from_file(open(path + '/' + fle))
             strs = msg.as_string()
             cleantext = clean_text(strs)
+            #print(cleantext)
             text_data_train.append(cleantext)
             if labels[fle] == "1":
                 gd_cnt = gd_cnt + 1

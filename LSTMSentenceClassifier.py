@@ -87,4 +87,3 @@ def Stacked_LSTM_Sentence_Classifier(timesteps, numHidden,top_words, embedding_v
     model.fit(X_train, y_train,
               batch_size, epochs)
     return model
-

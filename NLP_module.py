@@ -74,7 +74,7 @@ def plotRoc(y_predict, y_label):
     plt.figure()
     lw = 2
     plt.plot(fprUni, tprUni, color='darkorange',
-             lw=lw, label='ROC curve (area = %0.2f)' % roc_aucUni)
+             lw=lw, label='ROC curve (AUC = %0.2f)' % roc_aucUni)
     plt.plot([0, 1], [0, 1], color='navy', lw=lw, linestyle='--')
     plt.xlim([0.0, 1.0])
     plt.ylim([0.0, 1.05])
